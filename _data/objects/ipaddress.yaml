@@ -15,9 +15,10 @@ schema:
     _value: private
     _description: The type of IP Address, either public or private
   rdns:
+    _editable: true
     _type: string
     _value: null
-    _description: Reverse DNS address for this IP Address.
+    _description: Reverse DNS address for this IP Address. Null to reset.
 enums:
   IPAddressType:
     public: Public IP Address

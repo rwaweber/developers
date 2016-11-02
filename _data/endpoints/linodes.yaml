@@ -684,7 +684,7 @@ endpoints:
                 }' \
                 https://$api_root/$version/linode/instances/$linode_id/ips
   linode/instances/:id/ips/:ip_address:
-    type: resource
+    type: action
     resource: ipaddress
     authenticated: true
     description: >
@@ -693,7 +693,8 @@ endpoints:
       GET:
         oauth: linodes:view
         description: >
-          Returns information about this <a href="#object-ipaddress">IP Address</a>.
+          Returns information about this <a href="#object-ipaddress">IPv4</a> or
+          <a href="#object-ipv6-address">IPv6</a> Address.
         examples:
           curl: |
             curl -H "Authorization: token $TOKEN" \
@@ -707,25 +708,6 @@ endpoints:
             curl -H "Content-Type: application/json" \
                 -H "Authorization: token $TOKEN" \
                 -X PUT -d '{
-                    "rdns":"example.org"
-                }' \
-                https://$api_root/$version/linode/instances/$linode_id/ips/$ip_address
-  linode/instances/:id/ips/:ip_address/rdns-reset:
-    type: resource
-    resource: ipaddress
-    authenticated: true
-    description: >
-      Manage a particular IP Address associated with this Linode.
-    methods:
-      POST:
-        oauth: linodes:modify
-        description: >
-            Reset
-        examples:
-          curl: |
-            curl -H "Content-Type: application/json" \
-                -H "Authorization: token $TOKEN" \
-                -X POST -d '{
                     "rdns":"example.org"
                 }' \
                 https://$api_root/$version/linode/instances/$linode_id/ips/$ip_address
