@@ -29,20 +29,10 @@ schema:
     _value: started
     _description: Status of the event.
     _filterable: false
-  status_percent:
+  percent_complete:
     _type: integer
     _value: 20
     _description: A percentage estimating the amount of time remaining for an event.
-    _filterable: false
-  duration:
-    _type: integer
-    _value: 1356
-    _description: The amount of time (in seconds) that an event has been in progress.
-    _filterable: false
-  time_remaining:
-    _type: integer
-    _value: 5436
-    _description: An estimate for the amount of time (in seconds) that an event has left to complete.
     _filterable: false
   linode_id:
     _type: integer
