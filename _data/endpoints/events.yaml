@@ -29,4 +29,14 @@ endpoints:
           event</a>.
         examples:
           curl: |
-            curl https://$api_root/$version/account/event/$event_id
+            curl https://$api_root/$version/account/event/123
+  account/events/:id/read:
+    type: resource
+    resource: events
+    methods:
+      POST:
+        description: >
+          Updates specific <a href="#object-event">event</a> to designate that it has been read.
+        examples:
+          curl: |
+            curl https://$api_root/$version/account/event/123/read

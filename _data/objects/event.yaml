@@ -34,6 +34,10 @@ schema:
     _value: 20
     _description: A percentage estimating the amount of time remaining for an event.
     _filterable: false
+  read:
+    _type: boolean
+    _value: false
+    _description: If this even has been read.
   linode_id:
     _type: integer
     _value: 123456
