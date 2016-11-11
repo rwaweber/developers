@@ -20,7 +20,7 @@ documentation](/reference). For API endpoints where this indicator is missing,
 you're able to use curl to test them without any additional steps. For example,
 we could [list supported distributions](/reference/#ep-distributions):
 
-    curl https://{{ site.api_root }}/{{ site.api_version }}/distributions
+    curl https://{{ site.api_root }}/{{ site.api_version }}/linode/distributions
 
 This will give you a response like this:
 
@@ -36,7 +36,8 @@ This will give you a response like this:
             "recommended": true,
             "vendor": "Ubuntu",
             "x64": true
-        }, # and so on
+        }
+        /* and so on */
     ],
     "page": 1,
     "total_pages": 2,
@@ -68,65 +69,90 @@ fa-lock"></i> Authenticated</span> requests on the [reference page](/reference)
 include this header in the curl examples. Try this, for example:
 
     curl -H "Authorization: token $token" \ 
-        https://{{ site.api_root }}/{{ site.api_version }}/linodes
+        https://{{ site.api_root }}/{{ site.api_version }}/linode/instances
 
 This will give you a response like this:
 
 
 {% highlight json %}
 {
-    "linodes": [
-        {
-            "alerts": {
-                "cpu": {
-                    "enabled": true,
-                    "threshold": 90
-                },
-                "io": {
-                    "enabled": true,
-                    "threshold": 5000
-                },
-                "transfer_in": {
-                    "enabled": true,
-                    "threshold": 5
-                },
-                "transfer_out": {
-                    "enabled": true,
-                    "threshold": 5
-                },
-                "transfer_quota": {
-                    "enabled": true,
-                    "threshold": 80
-                }
+   "linodes": [
+      {
+         "id": 2019697,
+         "label": "prod-1",
+         "ipv4": "97.107.143.73",
+         "ipv6": "2600:3c03::f03c:91ff:fe0a:18c6/64",
+         "datacenter": {
+            "label": "Newark, NJ",
+            "id": "newark",
+            "country": "us"
+         },
+         "backups": {
+            "last_backup": null,
+            "snapshot": null,
+            "schedule": {
+               "day": null,
+               "window": null
             },
-            "created": "2015-02-19T15:34:05",
-            "datacenter": {
-                "id": "newark",
-                "label": "Newark, NJ",
-                "country": "US"
+            "enabled": false
+         },
+         "status": "running",
+         "group": "",
+         "hypervisor": "kvm",
+         "created": "2016-11-10T19:38:00",
+         "distribution": {
+            "minimum_storage_size": 900,
+            "id": "linode/debian8",
+            "created": "2015-04-27T16:26:41",
+            "recommended": true,
+            "vendor": "Debian",
+            "label": "Debian 8.1",
+            "x64": true
+         },
+         "alerts": {
+            "io": {
+               "threshold": 10000,
+               "enabled": true
             },
-            "distribution": null,
-            "group": "",
-            "id": "prod-1",
-            "ips": {
-                "private": {
-                    "ipv4": [],
-                    "link_local": "fe80::f03c:91ff:fe33:a2e4"
-                },
-                "public": {
-                    "failover": [],
-                    "ipv4": [],
-                    "ipv6": "2600:3c03::f03c:91ff:fe33:a2e4"
-                }
+            "transfer_out": {
+               "enabled": true,
+               "threshold": 10
             },
-            "label": "linode871212",
-            "state": "provisioning",
-            "total_transfer": 2000,
-            "updated": "2015-02-19T16:10:45"
-        } # and so on
-    ],
-    "page": 1,
-    "total_pages": 14,
-    "total_results": 130
+            "transfer_in": {
+               "enabled": true,
+               "threshold": 10
+            },
+            "transfer_quota": {
+               "enabled": true,
+               "threshold": 80
+            },
+            "cpu": {
+               "enabled": true,
+               "threshold": 90
+            }
+         },
+         "type": [
+            {
+               "backups_price": 250,
+               "label": "Linode 2048",
+               "storage": 24576,
+               "transfer": 2000,
+               "vcpus": 1,
+               "id": "standard-1",
+               "hourly_price": 1,
+               "ram": 2048,
+               "monthly_price": 1000,
+               "mbits_out": 125,
+               "class": "standard"
+            }
+         ],
+         "total_transfer": 2000,
+         "updated": "2016-11-10T19:39:36"
+      }
+      /* and so on */
+   ],
+   "page": 1,
+   "total_pages": 1,
+   "total_results": 1
 }
 {% endhighlight %}
