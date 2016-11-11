@@ -31,40 +31,11 @@ above command will return a JSON object like the following:
 {
     "datacenters": [
         {
-            "id": "dallas",
-            "label": "Dallas, TX",
-            "country": "US"
-        },
-        {
-            "id": "fremont",
-            "label": "Fremont, CA",
-            "country": "US"
-        },
-        {
-            "id": "atlanta",
-            "label": "Atlanta, GA",
-            "country": "US"
-        },
-        {
             "id": "newark",
             "label": "Newark, NJ",
             "country": "US"
-        },
-        {
-            "id": "london",
-            "label": "London, UK",
-            "country": "UK"
-        },
-        {
-            "id": "singapore",
-            "label": "Singapore, SG",
-            "country": "SG"
-        },
-        {
-            "id": "frankfurt",
-            "label": "Frankfurt, DE",
-            "country": "DE"
         }
+        /* and so on */
     ],
     "page": 1,
     "total_pages": 1,
@@ -86,7 +57,7 @@ Linode (such as memory, storage space, and network transfer). Run the
 following curl command to retrieve a list of available Linode plans:
 
 {% highlight bash %}
-curl https://{{ site.api_root }}/{{ site.api_version }}/services/linode
+curl https://{{ site.api_root }}/{{ site.api_version }}/linode/types
 {% endhighlight %}
 
 The above command will return a JSON object like the following:
@@ -95,15 +66,16 @@ The above command will return a JSON object like the following:
 {
     "services": [
         {
-            "id": "linode2048.5",
-            "label": "Linode 1024",
+            "id": "standard-1",
+            "label": "Linode 2048",
             "vcpus": 1,
             "mbits_out": 125,
-            "disk": 24,
+            "storage": 24576,
             "hourly_price": 1,
-            "service_type": "linode",
-            "ram": 1024,
+            "class": "standard",
+            "ram": 2048,
             "monthly_price": 1000,
+            "backups_price": 250,
             "transfer": 2000
         }
         /* and so on */
@@ -128,7 +100,7 @@ like selecting a service and a datacenter, issue a call to the API, this time
 for a list of available distributions:
 
 {% highlight bash %}
-curl https://{{ site.api_root }}/{{ site.api_version }}/distributions
+curl https://{{ site.api_root }}/{{ site.api_version }}/linode/distributions
 {% endhighlight %}
 
 This will provide you with a list of distributions like the following:
@@ -178,8 +150,8 @@ to different locations and with different characteristics. Customize the
 following curl command and run it when you're ready to deploy:
 
 {% highlight bash %}
-curl -X POST https://{{ site.api_root }}/{{ site.api_version }}/linodes \
--d '{"service": "linode2048.5","datacenter": "newark","source": "linode/debian8","root_pass": "$root_pass","label":"prod-1"}' \
+curl -X POST https://{{ site.api_root }}/{{ site.api_version }}/linode/instances \
+-d '{"type": "standard-1", "datacenter": "newark", "distribution": "linode/debian8", "root_pass": "$root_pass", "label": "prod-1"}' \
 -H "Authorization: token $TOKEN" -H "Content-type: application/json"
 {% endhighlight %}
 
@@ -188,54 +160,76 @@ created Linode like the following:
 
 {% highlight json %}
 {
-    "linode": {
-        "id": "prod-1",
-        "total_transfer": 2000,
-        "distribution": null,
-        "label": "linode1",
-        "state": "provisioning",
-        "group": "",
-        "updated": "2015-12-07T18:03:28",
-        "created": "2015-12-07T18:03:28",
-        "datacenter": {
-            "id": "newark",
-            "label": "Newark",
-            "country": "US"
-        },
-        "ips": {
-            "private": {
-                "ipv4": [],
-                "link_local": "fe80::f03c:91ff:fe96:469d"
-            },
-            "public": {
-                "ipv4": ["172.28.4.12"],
-                "ipv6": "2a01:7e00::f03c:91ff:fe96:469d",
-                "failover": []
-            }
-        },
-        "alerts": {
-            "transfer_in": {
-                "threshold": 5,
-                "enabled": true
-            },
-            "transfer_quota": {
-                "threshold": 80,
-                "enabled": true
-            },
-            "transfer_out": {
-                "threshold": 5,
-                "enabled": true
-            },
-            "io": {
-                "threshold": 5000,
-                "enabled": true
-            },
-            "cpu": {
-                "threshold": 90,
-                "enabled": true
-            }
-        }
-    }
+   "id": 123456,
+   "total_transfer": 2000,
+   "label": "prod-1",
+   "status": "provisioning",
+   "group": "",
+   "updated": "2016-11-10T19:01:12",
+   "created": "2016-11-10T19:01:12",
+   "hypervisor": "kvm",
+   "ipv4": "97.107.143.56",
+   "ipv6": "2600:3c03::f03c:91ff:fe0a:18ab/64",
+   "datacenter": {
+      "id": "newark",
+      "country": "us",
+      "label": "Newark, NJ"
+   },
+   "type": [
+      {
+         "ram": 2048,
+         "label": "Linode 2048",
+         "monthly_price": 1000,
+         "transfer": 2000,
+         "class": "standard",
+         "storage": 24576,
+         "id": "standard-1",
+         "backups_price": 250,
+         "mbits_out": 125,
+         "hourly_price": 1,
+         "vcpus": 1
+      }
+   ],
+   "distribution": {
+      "recommended": true,
+      "x64": true,
+      "created": "2015-04-27T16:26:41",
+      "id": "linode/debian8",
+      "label": "Debian 8.1",
+      "vendor": "Debian",
+      "minimum_storage_size": 900
+   },
+   "alerts": {
+      "cpu": {
+         "threshold": 90,
+         "enabled": true
+      },
+      "transfer_out": {
+         "enabled": true,
+         "threshold": 10
+      },
+      "io": {
+         "threshold": 10000,
+         "enabled": true
+      },
+      "transfer_quota": {
+         "threshold": 80,
+         "enabled": true
+      },
+      "transfer_in": {
+         "enabled": true,
+         "threshold": 10
+      }
+   },
+   "backups": {
+      "snapshot": null,
+      "last_backup": null,
+      "enabled": false,
+      "schedule": {
+         "day": null,
+         "window": null
+      }
+   }
 }
 {% endhighlight %}
 
@@ -253,7 +247,7 @@ the following curl command. Also remember to replace ```$TOKEN``` with
 your authorization token as in the previous API call.
 
 {% highlight bash %}
-curl -X POST https://{{ site.api_root }}/{{ site.api_version }}/linodes/$linode_id/boot \
+curl -X POST https://{{ site.api_root }}/{{ site.api_version }}/linode/instances/$linode_id/boot \
 -H "Authorization: token $TOKEN"
 {% endhighlight %}
 
@@ -262,14 +256,15 @@ status code is 200, it worked. You can now watch for the Linode's state field to
 change from "booting" to "running":
 
 {% highlight bash %}
-curl https://{{ site.api_root }}/{{ site.api_version }}/linodes/$linode_id \
+curl https://{{ site.api_root }}/{{ site.api_version }}/linode/instances/$linode_id \
 -H "Authorization: token $TOKEN"
 {% endhighlight %}
 
 {% highlight json %}
 {
     "linode": {
-        "id": "prod-1",
+        "id": 123456,
+        "label": "prod-1",
         "status": "running",
         /* and so on */
     }
