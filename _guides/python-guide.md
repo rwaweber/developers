@@ -57,12 +57,12 @@ Looks like we only have one option in the alpha environment - so we'll just grab
 >>> dc = client.get_datacenters()[0]
 {% endhighlight %}
 
-For a Service, we know that we want "Linode 2048".  Since we know the service name, we don't need to list all services, we
+For a Service, we know that we want "Linode 2048".  Since we know the service type's label, we don't need to list all services, we
 can just use the label:
 
 {% highlight python %}
->>> serv = client.linode.get_services(linode.Service.label == "Linode 2048").first()
->>> serv = linode.Service(client, 'linode2048.5')
+>>> serv = client.linode.get_types(linode.Service.label == "Linode 2048").first()
+>>> serv = linode.Service(client, 'standard-1')
 >>> serv.label
 'Linode 2048'
 {% endhighlight %}
@@ -76,7 +76,7 @@ all places it would be used.
 Since we have everything we need to make a Linode, we can create one with the LinodeClient:
 
 {% highlight python %}
->>> l = client.create_instance(serv, dc)
+>>> l = client.linode.create_instance(serv, dc)
 {% endhighlight %}
 
 And that's it!  Now we've got a fresh new Linode.  Let's check it out:
@@ -110,7 +110,7 @@ The Python Library uses SQLAlchemy-like filtering syntax - any field [marked fil
 We can chain filters together to run more complex searches, and even use SQLAlchemy operators like and_ and or_ if needed.  This search reveals some options.
 Since Debian 8.1 is the newest Debian template available, let's use it.
 
-Since we have the label for the distribution, we don't need to construct an object.
+Since we have the id for the distribution, we don't need to construct an object.
 
 ## Creating a Linode (with a Distribution)
 
@@ -124,10 +124,10 @@ True
 Now that that's gone, we can create a new Linode running Debian 1.8:
 
 {% highlight python %}
->>> l, pw = client.create_instance(serv, dc, distribution="linode/debian8")
+>>> l, pw = client.linode.create_instance(serv, dc, distribution="linode/debian8")
 {% endhighlight %}
 
-This time, we called `create_instance` with a "distribution" keywork argument.  This tells the API what we want on the new Linode, and it will do
+This time, we called `create_instance` with a "distribution" keyword argument.  This tells the API what we want on the new Linode, and it will do
 "[the right thing](/reference/#ep-linodes-POST)" to give you a working configuration.  Since a Distribution needs a root password and we didn't
 provide one, the client helpfully generated one for us and returned it as well.  Let's boot it and wait for it to come online:
 
