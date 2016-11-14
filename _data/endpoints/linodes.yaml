@@ -59,6 +59,10 @@ endpoints:
             description: >
               The root password to use when sourcing this Linode from a distribution.
               <ul><li>root_pass is required if the source provided is a distribution.</li></ul>
+          root_ssh_key:
+            optional: true
+            description: >
+              A public SSH key file to install at `/root/.ssh/authorized_keys` when creating this Linode.
           stackscript:
             optional: true
             description: >
