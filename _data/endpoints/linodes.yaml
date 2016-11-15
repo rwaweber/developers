@@ -548,7 +548,7 @@ endpoints:
     type: action
     authenticated: true
     description: >
-      Returns information about this Linode's <a href="#object-backup">backups</a>.
+      Returns information about this Linode's available <a href="#object-backup">backups</a>.
     methods:
       GET:
         oauth: linodes:view
