@@ -1,0 +1,39 @@
+# vim: set et ts=2 sw=2 tw=80 :
+name: Networking
+sort: 1
+base_path: /networking
+description: >
+  Networking endpoints provide a means of viewing <a href="#object-networking">
+  networking objects</a>.
+endpoints:
+  networking/ip-assign:
+    type: strange
+    authenticated: true
+    description: >
+      Assigns an IPv4 address to a Linode.
+    methods:
+      POST:
+        oauth: linodes:access
+        dangerous: true
+        params:
+          datacenter:
+            description: >
+              The <a href="#object-datacenter">datacenter</a> where the IPv4 address
+              and Linode are located.
+            type: datacenter
+          assignments:
+            description: >
+              An array of IPv4 addresses and the Linode IDs they will be assigned to
+            type: array
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                    "datacenter": "newark",
+                    "assignments": [
+                      {"address": "210.111.22.95", "linode_id": 134504},
+                      {"address": "190.12.207.11", "linode_id": 119034},
+                    ]
+                }' \
+            https://$api_root/$version/networking/ip-assign
