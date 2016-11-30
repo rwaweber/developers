@@ -655,21 +655,19 @@ endpoints:
             import linode
             TODO
   linode/instances/:id/ips:
-    type: list
-    resource: linode
+    type: strange
     authenticated: true
     description: >
-        Manage IP Addresses for a Linode
+      View networking information for this Linode.
     methods:
       GET:
         oauth: linodes:view
         description: >
-          Returns a list of <a href="#object-ipaddress">IP Addresses</a> and a list
-          of <a href="#object-ipv6-address">IPv6 Addresses</a>.
+          Returns a <a href="#object-linodenetworking">Linode Networking Object</a>.
         examples:
           curl: |
             curl -H "Authorization: token $TOKEN" \
-                https://$api_root/$version/linode/instances/$linode_id/s
+                https://$api_root/$version/linode/instances/$linode_id/ips
       POST:
         oauth: linodes:modify
         description: >

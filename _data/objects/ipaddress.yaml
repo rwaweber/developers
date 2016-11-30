@@ -2,9 +2,6 @@ name: IPv4 Address
 description: >
     An IPv4 Address
 schema:
-  id:
-    _type: string
-    _value: 192.168.1.100
   address:
     _type: string
     _value: 192.168.1.100
