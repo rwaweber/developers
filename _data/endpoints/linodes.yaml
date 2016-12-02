@@ -372,7 +372,7 @@ endpoints:
             limit: 1-48 characters
           disks:
             description: >
-              An array of <a href="#object-disk">disk</a> IDs to attach to this config.
+              <a href="#object-disk">Disks</a> attached to this Linode config.
           comments:
             optional: true
             description: >
@@ -409,10 +409,11 @@ endpoints:
                 -X POST -d '{
                     "label": "Arch Linux config",
                     "kernel": "linode/latest_64",
-                    "disks": [
-                      5567,
-                      5568,
-                    ]
+                    "disks": {
+                      "sda": 5567,
+                      "sdb": 5568
+                      }
+                    }
                 }' \
                 https://$api_root/$version/linode/instances/$linode_id/configs
           python: |
@@ -449,7 +450,7 @@ endpoints:
                     "label": "Edited config",
                     "kernel": {
                       "id": "linode/latest_64"
-                    }
+                    },
                     "disks": {
                       "sda": {
                         "id": 5567
