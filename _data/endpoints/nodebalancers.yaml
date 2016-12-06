@@ -1,0 +1,125 @@
+# vim: set et ts=2 sw=2 tw=80 :
+name: NodeBalancers
+base_path: /nodebalancers
+description: >
+  NodeBalancer endpoints provide a means of managing <a href="#object-nodebalancer">
+  NodeBalancer objects</a> on your account.
+endpoints:
+  nodebalancers:
+    type: list
+    resource: nodebalancer
+    authenticated: true
+    description: >
+      Manage the collection of NodeBalancers your account may access.
+    methods:
+      GET:
+        oauth: nodebalancers:view
+        description: >
+          Returns a list of <a href="#object-nodebalancer">NodeBalancers</a>.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/nodebalancers
+      POST:
+        money: true
+        oauth: nodebalancers:create
+        description: >
+          Creates a new NodeBalancer.
+        params:
+          datacenter:
+            description: >
+              A <a href="#object-datacenter">datacenter</a> ID to provision
+              this NodeBalancer in.
+            type: datacenter
+          label:
+            optional: true
+            description: The label to assign this NodeBalancer. Defaults to "nodebalancer" followed by its ID.
+            limit: "3-32 ASCII characters limited to letters, numbers, underscores, and dashes, starting and ending with a letter, and without two dashes or underscores in a row"
+          client_conn_throttle:
+            optional: true
+            description: >
+              To help mitigate abuse, throttle connections per second, per client. 0 to disable, max of 20.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                    "datacenter": "newark",
+                    "label": "my_cool_balancer",
+                    "client_conn_throttle": 10,
+                }' \
+                https://$api_root/$version/nodebalancers
+  nodebalancers/:id:
+    type: resource
+    resource: nodebalancer
+    authenticated: true
+    description: >
+      Manage a particular NodeBalancer your account may access.
+    methods:
+      GET:
+        oauth: nodebalancers:view
+        description: >
+          Returns information about this <a href="#object-nodebalancer">NodeBalancer</a>.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/nodebalancers/$nodebalancer_id
+      PUT:
+        oauth: nodebalancers:modify
+        description: >
+          Modifies this NodeBalancer.
+      #DELETE:
+      # oauth: nodebalancers:delete
+      # dangerous: true
+      # description: >
+      #   Deletes this NodeBalancer. This action cannot be undone.
+      # examples:
+      #   curl: |
+      #     curl -H "Authorization: token $TOKEN" \
+      #         -X DELETE \
+      #         https://$api_root/$version/nodebalancers/$nodebalancer_id
+  nodebalancers/:id/configs:
+    type: list
+    resource: nodebalancer_config
+    authenticated: true
+    description: >
+      Manage the configs on this NodeBalancer.
+    methods:
+      GET:
+        oauth: nodebalancers:view
+        description: >
+          Returns a list of <a href="#object-nodebalancer_config">configs</a> for a
+          given NodeBalancer.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/nodebalancers/$nodebalancer_id/configs
+      POST:
+        oauth: nodebalancers:create
+        description: >
+          Creates a NodeBalancer config
+  nodebalancers/:id/configs/:id:
+    type: resource
+    authenticated: true
+    description: >
+      Manage a particular NodeBalancer config
+    methods:
+      GET:
+        oauth: nodebalancers:view
+        description: >
+          Returns information about this NodeBalancer config.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/nodebalancers/$nodebalancer_id/configs/$config_id
+      DELETE:
+        oauth: nodebalancers:modify
+        description: >
+          Deletes a NodeBalancer config. This action cannot be undone.
+        dangerous: true
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                -X DELETE \
+                https://$api_root/$version/nodebalancers/$nodebalancer_id/configs/$config_id
+
