@@ -8,6 +8,7 @@ endpoints:
   account/events:
     type: list
     resource: events
+    authenticated: true
     description: >
       View the collection of events.
     methods:
@@ -20,6 +21,7 @@ endpoints:
   account/events/:id:
     type: resource
     resource: events
+    authenticated: true
     description: >
       Returns information about a specific event.
     methods:
@@ -33,6 +35,7 @@ endpoints:
   account/events/:id/read:
     type: resource
     resource: events
+    authenticated: true
     methods:
       POST:
         description: >
