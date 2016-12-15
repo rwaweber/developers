@@ -98,6 +98,59 @@ endpoints:
         oauth: nodebalancers:create
         description: >
           Creates a NodeBalancer config
+        params:
+          label:
+            description: Unique label for your NodeBalancer config
+          port:
+            description: Port to bind to on the public interfaces.
+            limit: 1-65534
+          protocol:
+            description: The protocol used for the config.
+          algorithm:
+            description: Balancing algorithm
+          stickiness:
+            description: Session persistence. Route subsequent requests from a client to the same backend.
+          check:
+            description: Perform active health checks on the backend nodes.
+          check_interval:
+            description: Seconds between health check probes.
+          check_timeout:
+            description: Seconds to wait before considering the probe a failure.
+            limit: 1-30. Must be less than check_interval.
+          check_attempts:
+            description: Number of failed probes before taking a node out of rotation.
+            limit: 1-30.
+          check_path:
+            description: When check is "http", the path to request.
+          check_body:
+            description: When check is "http", a regex to match within the first 16,384 bytes of the response body.
+          check_passive:
+            description: Enable passive checks based on observing communication with back-end nodes.
+          # ssl_cert:
+          #  description: SSL certificate served by the NodeBalancer when the protocol is "https".
+          # ssl_key:
+          #  description: Unpassphrased private key for the SSL certificate when the protocol is "https".
+          cipher_suite:
+            description: SSL cipher suite to enforce.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                    "label": "myNodeBalancer",
+                    "port": 80,
+                    "protocol": "http",
+                    "algorithm": "roundrobin",
+                    "stickiness": "none",
+                    "check": "http_body",
+                    "check_interval": 5,
+                    "check_timeout": 3,
+                    "check_attempts": 10,
+                    "check_path": "/path/to/check",
+                    "check_body": "we got some stuff back",
+                    "cipher_suite": "legacy"
+                }' \
+                https://$api_root/$version/nodebalancers
   nodebalancers/:id/configs/:id:
     type: resource
     authenticated: true
