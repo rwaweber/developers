@@ -32,6 +32,17 @@ endpoints:
         examples:
           curl: |
             curl https://$api_root/$version/account/event/123
+  account/events/:id/seen:
+    type: resource
+    resource: events
+    authenticated: true
+    methods:
+      POST:
+        description: >
+          Marks all <a href="#object-event">events</a> up to and including :id as seen.
+        examples:
+          curl: |
+            curl https://$api_root/$version/account/event/123/read
   account/events/:id/read:
     type: resource
     resource: events
