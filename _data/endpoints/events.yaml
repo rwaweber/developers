@@ -42,7 +42,7 @@ endpoints:
           Marks all <a href="#object-event">events</a> up to and including :id as seen.
         examples:
           curl: |
-            curl https://$api_root/$version/account/event/123/read
+            curl https://$api_root/$version/account/event/123/seen
   account/events/:id/read:
     type: resource
     resource: events
