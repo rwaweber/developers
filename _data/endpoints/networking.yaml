@@ -21,6 +21,7 @@ endpoints:
             curl -H "Authorization: token $TOKEN" \
               https://api.alpha.linode.com/v4/networking/ipv4
       POST:
+        money: true
         oauth: ips:create
         description: >
           Create a new Public <a href="#object-ipaddress">IPv4 Address</a>
