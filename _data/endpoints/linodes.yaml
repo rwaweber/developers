@@ -552,6 +552,9 @@ endpoints:
       Returns information about this Linode's available <a href="#object-backup">backups</a>.
     methods:
       GET:
+        description: >
+          Returns a <a href="#object-backupsresponse">Backups Response</a> with information on this Linode's
+          available backups.
         oauth: linodes:view
         examples:
           curl: |
