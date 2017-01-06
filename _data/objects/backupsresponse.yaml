@@ -6,7 +6,7 @@ schema:
     _description: >
       The current Daily backup for this Linode.
     _type: Backup
-    id: 
+    id:
       _type: integer
       _value: 123456
     status:
@@ -56,7 +56,7 @@ schema:
     _type: array
     _subtype: Backup
     _value:
-    - id: 
+    - id:
         _type: integer
         _value: 142359
       status:
@@ -100,7 +100,7 @@ schema:
             size:
               _type: integer
               _value: 512
-    - id: 
+    - id:
         _type: integer
         _value: 901234
       status:
@@ -146,50 +146,53 @@ schema:
               _value: 512
   snapshot:
     _description: >
-      This Linode's current snapshot.
-    _type: Backup
-    _value: 
-    id: 
-      _type: integer
-      _value: 92348
-    status:
-      _type: string
-      _value: finished
-    created:
-      _type: datetime
-      _value: 2016-12-01T10:30:00
-    finished:
-      _type: datetime
-      _value: 2016-12-01T10:33:45
-    label:
-      _type: string
-      _value: null
-    datacenter:
-      _type: string
-      _value: newark
-    configs:
-      _type: array
-      _subtype: string
-      _value:
-        - My Ubuntu 15.10 Profile
-    disks:
-      _type: array
-      _value:
-        - filesystem:
-            _type: string
-            _value: ext4
-          label:
-            _type: string
-            _value: My Ubuntu 15.10 Disk
-          size:
-            _type: integer
-            _value: 1024
-        - filesystem:
-            _type: string
-            _value: swap
-          label:
-            _type: string
-            _value: swap
-          size:
-            _type: integer
-            _value: 512
+      This Linode's current and in progress snapshots.
+    current:
+        _type: Backup
+        id:
+          _type: integer
+          _value: 92348
+        status:
+          _type: string
+          _value: finished
+        created:
+          _type: datetime
+          _value: 2016-12-01T10:30:00
+        finished:
+          _type: datetime
+          _value: 2016-12-01T10:33:45
+        label:
+          _type: string
+          _value: null
+        datacenter:
+          _type: string
+          _value: newark
+        configs:
+          _type: array
+          _subtype: string
+          _value:
+            - My Ubuntu 15.10 Profile
+        disks:
+          _type: array
+          _value:
+            - filesystem:
+                _type: string
+                _value: ext4
+              label:
+                _type: string
+                _value: My Ubuntu 15.10 Disk
+              size:
+                _type: integer
+                _value: 1024
+            - filesystem:
+                _type: string
+                _value: swap
+              label:
+                _type: string
+                _value: swap
+              size:
+                _type: integer
+                _value: 512
+    in_progress:
+      _type: Backup
+      _value: "null"
