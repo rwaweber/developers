@@ -46,7 +46,7 @@ endpoints:
                 -X POST -d '{
                     "datacenter": "newark",
                     "label": "my_cool_balancer",
-                    "client_conn_throttle": 10,
+                    "client_conn_throttle": 10
                 }' \
                 https://$api_root/$version/nodebalancers
   nodebalancers/:id:
@@ -68,16 +68,26 @@ endpoints:
         oauth: nodebalancers:modify
         description: >
           Modifies this NodeBalancer.
-      #DELETE:
-      # oauth: nodebalancers:delete
-      # dangerous: true
-      # description: >
-      #   Deletes this NodeBalancer. This action cannot be undone.
-      # examples:
-      #   curl: |
-      #     curl -H "Authorization: token $TOKEN" \
-      #         -X DELETE \
-      #         https://$api_root/$version/nodebalancers/$nodebalancer_id
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X PUT -d '{
+                    "datacenter": "newark",
+                    "label": "awesome_new_label",
+                    "client_conn_throttle": 14
+                }' \
+                https://$api_root/$version/nodebalancers/$nodebalancer_id
+      DELETE:
+       oauth: nodebalancers:delete
+       dangerous: true
+       description: >
+         Deletes this NodeBalancer and all associated configs and nodes. This action cannot be undone.
+       examples:
+         curl: |
+           curl -H "Authorization: token $TOKEN" \
+               -X DELETE \
+               https://$api_root/$version/nodebalancers/$nodebalancer_id
   nodebalancers/:id/configs:
     type: list
     resource: nodebalancer_config
@@ -97,17 +107,17 @@ endpoints:
       POST:
         oauth: nodebalancers:create
         description: >
-          Creates a NodeBalancer config
+          Creates a NodeBalancer config.
         params:
           label:
-            description: Unique label for your NodeBalancer config
+            description: Unique label for your NodeBalancer config.
           port:
             description: Port to bind to on the public interfaces.
             limit: 1-65534
           protocol:
             description: The protocol used for the config.
           algorithm:
-            description: Balancing algorithm
+            description: Balancing algorithm.
           stickiness:
             description: Session persistence. Route subsequent requests from a client to the same backend.
           check:
@@ -116,10 +126,10 @@ endpoints:
             description: Seconds between health check probes.
           check_timeout:
             description: Seconds to wait before considering the probe a failure.
-            limit: 1-30. Must be less than check_interval.
+            limit: 1-30. Must be less than check_interval # leave the final period off!
           check_attempts:
             description: Number of failed probes before taking a node out of rotation.
-            limit: 1-30.
+            limit: 1-30
           check_path:
             description: When check is "http", the path to request.
           check_body:
@@ -155,7 +165,7 @@ endpoints:
     type: resource
     authenticated: true
     description: >
-      Manage a particular NodeBalancer config
+      Manage a particular NodeBalancer config.
     methods:
       GET:
         oauth: nodebalancers:view
@@ -168,11 +178,92 @@ endpoints:
       DELETE:
         oauth: nodebalancers:modify
         description: >
-          Deletes a NodeBalancer config. This action cannot be undone.
+          Deletes a NodeBalancer config and all associated nodes. This action cannot be undone.
         dangerous: true
         examples:
           curl: |
             curl -H "Authorization: token $TOKEN" \
                 -X DELETE \
                 https://$api_root/$version/nodebalancers/$nodebalancer_id/configs/$config_id
-
+  nodebalancers/:id/configs/:id/nodes:
+    type: list
+    resource: nodebalancer_config_nodes
+    authenticated: true
+    description: >
+      Manage the nodes for a specified NodeBalancer config.
+    methods:
+      GET:
+        oauth: nodebalancers:view
+        description: >
+          Returns a list of <a href="#object-nodebalancer_config_node">config nodes</a> for a
+          given NodeBalancer.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/nodebalancers/$nodebalancer_id/configs/$config_id/nodes
+      POST:
+        oauth: nodebalancers:create
+        description: Creates a new NodeBalancer config node.
+        params:
+          label:
+            description: Unique label for your NodeBalancer config node.
+          address:
+            description: The address:port combination used to communicate with this node.
+          weight:
+            description: Load balancing weight, 1-255. Higher means more connections.
+          mode:
+            description: The connections mode for this node. One of 'accept', 'reject', or 'drain'.
+          status:
+            description: The status of this node.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+              -H "Authorization: token $TOKEN" \
+              -X POST -d '{
+                  "label": "greatest_node_ever",
+                  "address": "192.168.4.5:80",
+                  "weight": 40,
+                  "mode": "accept",
+                  "status": "online"
+              }' \
+              https://$api_root/$version/nodebalancers/$nodebalancer_id/configs/$config_id/nodes
+  nodebalancers/:id/configs/:id/nodes/:id:
+    type: resource
+    authenticated: true
+    description: >
+      Manage a particular NodeBalancer config node.
+    methods:
+      GET:
+        oauth: nodebalancers:view
+        description: >
+          Returns information about this node..
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/nodebalancers/$nodebalancer_id/configs/$config_id/nodes/$node_id
+      PUT:
+        oauth: nodebalancers:modify
+        description: >
+          Modifies this node
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+              -H "Authorization: token $TOKEN" \
+              -X PUT -d '{
+                  "label": "node001",
+                  "address": "192.168.12.12:100",
+                  "weight": 40,
+                  "mode": "accept",
+                  "status": "online"
+              }' \
+              https://$api_root/$version/nodebalancers/$nodebalancer_id/configs/$config_id/nodes/$node_id
+      DELETE:
+        oauth: nodebalancers:modify
+        description: >
+          Deletes a NodeBalancer config. This action cannot be undone.
+        dangerous: true
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                -X DELETE \
+                https://$api_root/$version/nodebalancers/$nodebalancer_id/configs/$config_id/nodes/$node_id
