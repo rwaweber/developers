@@ -20,7 +20,7 @@ schema:
       This event's type.
   username:
     _type: string
-    _value: exmaple_user
+    _value: example_user
     _description: >
       The username of the user who initiated this event.
   percent_complete:
