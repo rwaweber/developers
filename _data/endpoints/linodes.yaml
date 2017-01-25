@@ -545,6 +545,36 @@ endpoints:
           python: |
             import linode
             TODO
+  linode/instances/:id/rescue:
+    type: action
+    authenticated: true
+    description: >
+      Reboots a Linode in Rescue Mode.
+    methods:
+      POST:
+        oauth: linodes:modify
+        dangerous: false
+        params:
+          disks:
+            optional: true
+            description: >
+              <a href="#object-disk">Disks</a> to include during Rescue.
+            type: disk
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                    "disks": {
+                      "sda": 5567,
+                      "sdb": 5568
+                      }
+                    }
+                }' \
+                https://$api_root/$version/linode/instances/$linode_id/rescue
+          python: |
+            import linode
+            TODO
   linode/instances/:id/backups:
     type: action
     authenticated: true
