@@ -1,0 +1,20 @@
+# vim: set et ts=2 sw=2 tw=80 :
+name: Account
+sort: 1
+base_path: /account
+description: >
+  Account endpoints provide a means of viewing <a href="#object-profile">
+  user profile objects</a>.
+endpoints:
+  account/profile:
+    type: resource
+    resource: account
+    description: >
+      Manage your user information.
+    methods:
+      GET:
+        description: >
+          Returns your user information.
+        examples:
+          curl: |
+            curl https://$api_root/$version/account/profile
