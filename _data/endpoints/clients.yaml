@@ -79,3 +79,44 @@ endpoints:
             curl -H "Authorization: token $TOKEN" \
                 -X DELETE \
                 https://$api_root/$version/account/clients/$client_id
+  account/clients/:id/reset_secret:
+    type: action
+    authenticated: true
+    description: >
+      Reset the OAuth application's client secret.
+    methods:
+      POST:
+        oauth: clients:modify
+        dangerous: true
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST \
+                https://$api_root/$version/account/clients/$client_id/reset_secret
+  account/clients/:id/thumbnail:
+    type: action
+    authenticated: true
+    description: >
+      Manage the OAuth application's thumbnail image.
+    methods:
+      GET:
+        oauth: clients:view
+        description: >
+          Retrieve the OAuth application's current thumbnail image.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/account/clients/$client_id/thumbnail
+      PUT:
+        oauth: clients:modify
+        description: >
+          Set or update the OAuth application's thumbnail image.
+          If the image is larger than 128x128 it will be scaled down.
+        examples:
+          curl: |
+            curl -H "Content-Type: image/png" \
+                -H "Authorization: token $TOKEN" \
+                -X PUT \
+                --data-binary "@/path/to/image"
+                https://$api_root/$version/account/clients/$client_id/thumbnail
