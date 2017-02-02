@@ -30,7 +30,7 @@ schema:
             _type: enum
             _subtype: IPAddressType
             _value: public
-            _description: The type of IP Address, either public or private
+            _description: The type of IP Address, either public or private.
           rdns:
             _type: string
             _value: "example.org"
