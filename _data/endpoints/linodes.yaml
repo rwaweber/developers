@@ -35,7 +35,7 @@ endpoints:
               A <a href="#object-datacenter">datacenter</a> ID to provision
               this Linode in.
             type: datacenter
-          service:
+          type:
             description: >
               A <a href="#object-service">service plan</a> ID to use for this
               Linode.
@@ -92,7 +92,7 @@ endpoints:
                 -H "Authorization: token $TOKEN" \
                 -X POST -d '{
                     "datacenter": "newark",
-                    "service": "linode2048.5"
+                    "type": "linode2048.5"
                 }' \
                 https://$api_root/$version/linode/instances
           python: |
