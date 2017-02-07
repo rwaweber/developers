@@ -575,6 +575,30 @@ endpoints:
           python: |
             import linode
             TODO
+  linode/instances/:id/resize:
+    type: action
+    authenticated: true
+    description: >
+      Resizes a Linode to a new <a href="#object-service">service plan</a>.
+    methods:
+      POST:
+        money: true
+        oauth: linodes:modify
+        dangerous: false
+        params:
+          type:
+            description: >
+              A <a href="#object-service">service plan</a> ID to use for this Linode.
+            type: service
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                    "type": "linode2048.5"
+                    }
+                }' \
+                https://$api_root/$version/linode/instances/$linode_id/resize
   linode/instances/:id/backups:
     type: action
     authenticated: true
