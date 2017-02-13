@@ -595,7 +595,7 @@ endpoints:
             curl -H "Content-Type: application/json" \
                 -H "Authorization: token $TOKEN" \
                 -X POST -d '{
-                    "type": "linode2048.5"
+                    "type": "standard-1"
                     }
                 }' \
                 https://$api_root/$version/linode/instances/$linode_id/resize
