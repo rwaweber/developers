@@ -4,7 +4,7 @@ sort: 1
 base_path: /account
 description: >
   Account endpoints provide a means of viewing <a href="#object-profile">
-  user profile objects</a>.
+  user profile objects</a>, as well as managing OAuth Clients and Tokens.
 endpoints:
   account/profile:
     type: resource
@@ -18,3 +18,259 @@ endpoints:
         examples:
           curl: |
             curl https://$api_root/$version/account/profile
+  account/profile/password:
+    methods:
+      POST:
+        description: >
+          Change your password.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+              -H "Authorization: token $TOKEN" \
+              -X POST -d '{
+                  "password":"hunter7"
+              }' \
+              https://$api_root/$version/account/profile/password
+  account/profile/tfa-enable:
+    methods:
+      POST:
+        description: >
+          Begin enabling TFA on your account.  Returns a two-factor secret
+          that you must validate with the tfa-enable-confirm endpoint
+          to require two-factor for future logins.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+              -H "Authorization: token $TOKEN" \
+              -X POST \
+              https://$api_root/$version/account/profile/tfa-enable
+  account/profile/tfa-enable-confirm:
+    methods:
+      POST:
+        description: >
+          Confirm your two-factor secret and require TFA for future logins.
+        params:
+          tfa-code:
+            type: string
+            description: >
+              The code generated using the two-factor secret you got from tfa-enable
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+              -H "Authorization: token $TOKEN" \
+              -X POST -d '{
+                "tfa-code": "123456"
+              }' \
+              https://$api_root/$version/account/profile/tfa-enable-confirm
+  account/profile/tfa-disable:
+    methods:
+      POST:
+        description: >
+          Disable TFA on your account.  Future logins will not require TFA.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+              -H "Authorization: token $TOKEN" \
+              -X POST \
+              https://$api_root/$version/account/profile/tfa-disable
+  account/tokens:
+    type: list
+    resource: oauthtoken
+    description: >
+      Manage OAuth Tokens created for your user.
+    methods:
+      GET:
+        oauth: tokens:view
+        description: >
+          Get a list of all OAuth Tokens active for your user.  This includes first-party (manager) tokens,
+          third-party OAuth Tokens, and Personal Access Tokens.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/account/tokens
+      POST:
+        oauth: tokens:create
+        dangerous: true
+        description: >
+          Creates a new Personal Access Token for your user with the given scopes and expiry.  This token
+          can subsequently be used to access the API and make any requests it has OAuth Scopes for.
+        params:
+          label:
+            type: string
+            value: my-token
+            optional: true
+            description: >
+              The label for this Personal Access Token.  For your reference only.
+          expiry:
+            type: datetime
+            value: 2017-12-31 01:00:00
+            optional: true
+            description: >
+              If provided, when this Personal Access Token will expire.  If omitted, the resulting
+              token will be valid until it is revoked.
+          scopes:
+            type: string
+            value: linodes:view
+            optional: true
+            description: >
+              The OAuth Scopes this token will be created with.  If omitted, the resulting token
+              will have all OAuth Scopes.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                  "scopes": "linodes:view;domains:view"
+                }' \
+                https://$api_root/$version/account/tokens
+  account/tokens/:id:
+    type: resource
+    resource: oauthtoken
+    description: >
+      Manage individual OAuth Tokens for your user.
+    methods:
+      GET:
+        oauth: tokens:view
+        description: >
+          Get a single token.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/account/tokens/123
+      PUT:
+        oauth: tokens:modify
+        description: >
+          Edit a token's label.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X PUT -d '{
+                  "label": "test-new-label"
+                }' \
+                https://$api_root/$version/account/tokens/123
+      DELETE:
+        oauth: tokens:delete
+        description: >
+          Expire an OAuth Token for your user.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                -X DELETE \
+                https://$api_root/$version/account/tokens/123
+  account/clients:
+    type: list
+    resource: client
+    authenticated: true
+    description: >
+      Manage the collection of OAuth client applications your account may access.
+    methods:
+      GET:
+        oauth: clients:view
+        description: >
+          Returns a list of <a href="#object-client">clients</a>.
+        examples:
+          curl: |
+            curl -H "Authorization; token $TOKEN" \
+                https://$api_root/$version/account/clients
+      POST:
+        oauth: clients:create
+        description: >
+          Registers a new OAuth client application.
+        params:
+          name:
+            description: A name for the new client application.
+            type: string
+            limit: "1-128 characters"
+          redirect_uri:
+            description: A URL to redirect to after the OAuth flow has completed.
+            type: string
+            limit: "1-512 characters"
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                    "name": "Example app",
+                    "redirect_uri": "https://oauthreturn.example.org/",
+                }' \
+                https://$api_root/$version/account/clients
+  account/clients/:id:
+    type: resource
+    resource: client
+    authenticated: true
+    description: >
+      Manage a particular OAuth client application your account may access.
+    methods:
+      GET:
+        oauth: clients:view
+        description: >
+          Returns information about this <a href="#object-client">OAuth client</a>.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/account/clients/$client_id
+      PUT:
+        oauth: clients:modify
+        description: >
+          Edits this <a href="#object-client">OAuth client</a>.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X PUT -d '{
+                    "name": "Updated app name",
+                    "redirect_uri": "https://newredirect.example.org/",
+                }' \
+                https://$api_root/$version/account/clients/$client_id
+      DELETE:
+        oauth: clients:delete
+        dangerous: true
+        description: >
+          Delete this OAuth application. This action cannot be undone.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                -X DELETE \
+                https://$api_root/$version/account/clients/$client_id
+  account/clients/:id/reset_secret:
+    type: action
+    authenticated: true
+    description: >
+      Reset the OAuth application's client secret.
+    methods:
+      POST:
+        oauth: clients:modify
+        dangerous: true
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST \
+                https://$api_root/$version/account/clients/$client_id/reset_secret
+  account/clients/:id/thumbnail:
+    type: action
+    authenticated: true
+    description: >
+      Manage the OAuth application's thumbnail image.
+    methods:
+      GET:
+        oauth: clients:view
+        description: >
+          Retrieve the OAuth application's current thumbnail image.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/account/clients/$client_id/thumbnail
+      PUT:
+        oauth: clients:modify
+        description: >
+          Set or update the OAuth application's thumbnail image.
+          If the image is larger than 128x128 it will be scaled down.
+        examples:
+          curl: |
+            curl -H "Content-Type: image/png" \
+                -H "Authorization: token $TOKEN" \
+                -X PUT \
+                --data-binary "@/path/to/image"
+                https://$api_root/$version/account/clients/$client_id/thumbnail

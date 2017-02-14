@@ -1,6 +1,6 @@
-name: Client
+name: OAuth Client
 description: >
-  Client objects describe an OAuth client application owned by your account.
+  OAuth Client objects describe an OAuth client application owned by your account.
 schema:
   id:
     _type: string

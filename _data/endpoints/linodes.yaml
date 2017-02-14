@@ -37,7 +37,7 @@ endpoints:
             type: datacenter
           type:
             description: >
-              A <a href="#object-service">service plan</a> ID to use for this
+              A <a href="#object-service">Linode type</a> ID to use for this
               Linode.
             type: service
           label:
@@ -579,7 +579,7 @@ endpoints:
     type: action
     authenticated: true
     description: >
-      Resizes a Linode to a new <a href="#object-service">service plan</a>.
+      Resizes a Linode to a new <a href="#object-service">Linode type</a>.
     methods:
       POST:
         money: true
@@ -588,7 +588,7 @@ endpoints:
         params:
           type:
             description: >
-              A <a href="#object-service">service plan</a> ID to use for this Linode.
+              A <a href="#object-service">Linode type</a> to use for this Linode.
             type: service
         examples:
           curl: |
@@ -744,6 +744,25 @@ endpoints:
                     "type": "private"
                 }' \
                 https://$api_root/$version/linode/instances/$linode_id/ips
+  linode/instances/:id/ips/sharing:
+    methods:
+      POST:
+        description: >
+            Sets IP Sharing for this Linode.
+        params:
+          ips:
+            type: list
+            subtype: string
+            description: >
+              A list of IP Addresses this Linode will share.
+        example:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                  "ips": [ "97.107.143.29", "97.107.143.112" ]
+                }' \
+                https://$api_root/$version/linode/instances/$linode_id/ips/sharing
   linode/instances/:id/ips/:ip_address:
     type: action
     resource: ipaddress
