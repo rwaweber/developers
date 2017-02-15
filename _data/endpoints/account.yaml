@@ -18,6 +18,24 @@ endpoints:
         examples:
           curl: |
             curl https://$api_root/$version/account/profile
+      PUT:
+        description: >
+          Edits your account profile.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+              -H "Authorization: token $TOKEN" \
+              -X PUT -d '{
+                    "username": "jsmith",
+                    "email": "jsmith@mycompany.com",
+                    "timezone": "US/Eastern",
+                    "email_notifications": true,
+                    "ip_whitelist_enabled": true,
+                    "lish_auth_method": "password_keys",
+                    "authorized_keys": ""
+                  }
+                }' \
+                https://$api_root/$version/account/profile
   account/profile/password:
     methods:
       POST:
@@ -149,6 +167,41 @@ endpoints:
                   "label": "test-new-label"
                 }' \
                 https://$api_root/$version/account/tokens/123
+  account/settings:
+    type: resource
+    resource: account
+    description: >
+      Manage your account settings.
+    methods:
+      GET:
+        description: >
+          Returns your account settings.
+        examples:
+          curl: |
+            curl https://$api_root/$version/account/settings
+      PUT:
+        description: >
+          Edits your account settings.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X PUT -d '{
+                  "address_1": "123 Main St.",
+                  "address_2": "Suite 101",
+                  "city": "Philadelphia",
+                  "company": "My Company, LLC",
+                  "country": "US",
+                  "email": "jsmith@mycompany.com",
+                  "first_name": "John",
+                  "last_name": "Smith",
+                  "network_helper": true,
+                  "phone": "555-555-1212",
+                  "state": "PA",
+                  "zip": 19102
+                  }
+                }' \
+                https://$api_root/$version/account/settings
       DELETE:
         oauth: tokens:delete
         description: >
@@ -274,3 +327,23 @@ endpoints:
                 -X PUT \
                 --data-binary "@/path/to/image"
                 https://$api_root/$version/account/clients/$client_id/thumbnail
+  account/users:
+    type: list
+    resource: account
+    description: >
+      Returns a list of <a href="#object-user">User objects</a> associated with your account.
+    methods:
+      GET:
+        examples:
+          curl: |
+            curl https://$api_root/$version/account/users
+  account/users/:username:
+    type: resource
+    resource: account
+    description: >
+      Returns information about a specific user associated with your account.
+    methods:
+      GET:
+        examples:
+          curl: |
+            curl https://$api_root/$version/account/users/$username
