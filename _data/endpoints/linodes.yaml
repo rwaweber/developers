@@ -545,6 +545,24 @@ endpoints:
           python: |
             import linode
             TODO
+  linode/instances/:id/kvmify:
+    type: action
+    authenticated: true
+    description: >
+      Changes a Linode's hypervisor from Xen to KVM.
+    methods:
+      POST:
+        oauth: linodes:modify
+        dangerous: true
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST \
+                https://$api_root/$version/linode/instances/$linode_id/kvmify
+          python: |
+            import linode
+            TODO
   linode/instances/:id/rescue:
     type: action
     authenticated: true
