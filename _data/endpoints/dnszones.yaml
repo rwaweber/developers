@@ -36,7 +36,7 @@ endpoints:
               The DNS Zone name.
           type:
             description: >
-              DNS Zone <a href="#object-zone_type-enum">type</a> as master or slave.
+              DNS Zone <a href="#object-dnszone_type-enum">type</a> as master or slave.
           soa_email:
             optional: true
             description: >
