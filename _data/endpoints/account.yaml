@@ -167,6 +167,15 @@ endpoints:
                   "label": "test-new-label"
                 }' \
                 https://$api_root/$version/account/tokens/123
+      DELETE:
+        oauth: tokens:delete
+        description: >
+          Expire an OAuth Token for your user.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                -X DELETE \
+                https://$api_root/$version/account/tokens/123
   account/settings:
     type: resource
     resource: account
@@ -202,15 +211,6 @@ endpoints:
                   }
                 }' \
                 https://$api_root/$version/account/settings
-      DELETE:
-        oauth: tokens:delete
-        description: >
-          Expire an OAuth Token for your user.
-        examples:
-          curl: |
-            curl -H "Authorization: token $TOKEN" \
-                -X DELETE \
-                https://$api_root/$version/account/tokens/123
   account/clients:
     type: list
     resource: client
