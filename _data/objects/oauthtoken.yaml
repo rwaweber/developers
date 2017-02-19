@@ -1,7 +1,7 @@
 name: OAuth Token
 prefix: account/tokens
 description: >
-  An OAuth Token granting access to your account.
+  An OAuth Token granting access to your user.
 schema:
   id:
     _type: integer
