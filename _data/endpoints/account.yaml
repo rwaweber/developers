@@ -91,6 +91,15 @@ endpoints:
               -H "Authorization: token $TOKEN" \
               -X POST \
               https://$api_root/$version/account/profile/tfa-disable
+  account/profile/grants:
+    methods:
+      GET:
+        description: >
+          Get grants for the current user.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/account/profile/grants
   account/tokens:
     type: list
     resource: oauthtoken
@@ -337,6 +346,33 @@ endpoints:
         examples:
           curl: |
             curl https://$api_root/$version/account/users
+      POST:
+        description: >
+          Creates a new user.
+        params:
+          username:
+            type: string
+            description: The username for the new user.
+          email:
+            type: string
+            description: The user's email.
+          password:
+            type: string
+            description: The user's password.
+          restricted:
+            optinoal: true
+            type: bool
+            description: If false, this user has access to the entire account.  Defaults to true.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                    "username": "testguy",
+                    "password": "hunter7",
+                    "email": "testguy@linode.com"
+                }' \
+                https://$api_root/$version/account/users
   account/users/:username:
     type: resource
     resource: account
@@ -347,3 +383,66 @@ endpoints:
         examples:
           curl: |
             curl https://$api_root/$version/account/users/$username
+      PUT:
+        description: >
+          Update a user.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X PUT -d '{
+                    "email": "newemail@linode.com"
+                  }
+                }' \
+                https://$api_root/$version/account/users/testguy
+      DELETE:
+        description: >
+          Deletes a user.  May not delete the last unrestricted user on the account.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                -X DELETE \
+                https://$api_root/$version/account/users/testguy
+  account/users/:username/password:
+    type: action
+    description: >
+      Update a user's password
+    methods:
+      POST:
+        params:
+          password:
+            type: string
+            description: The user's new password.
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                    "password": "hunter7",
+                }' \
+                https://$api_root/$version/account/users/testguy/password
+  account/users/:username/grants:
+    type: resource
+    resource: usergrants
+    description: >
+      Manage grants for restricted users.  It is an error to call this endpoint for unrestrcited users.  Only unrestricted
+      users may access this endpoint.
+    methods:
+      GET:
+        description: Get grants for a restricted user.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                https://$api_root/$version/account/users/testguy/grants
+      PUT:
+        description: >
+          Update grants for a restricted user.
+        examples:
+          curl: |
+            curl -H "Authorization: token $TOKEN" \
+                -X PUT -d '{
+                    "global": {
+                        "add_linodes": true
+                    }
+                }' \
+                https://$api_root/$version/account/users/testguy/grants
