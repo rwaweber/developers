@@ -1,6 +1,6 @@
 name: Support Ticket
 description: >
-  Support ticket objects describe request to the Linode support team.
+  Support ticket objects describe requests to the Linode support team.
 schema:
   id:
     _type: integer

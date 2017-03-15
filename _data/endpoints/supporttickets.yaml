@@ -23,7 +23,7 @@ endpoints:
       POST:
         oauth: tickets:create
         description: >
-          Submit a new question or request for help to the Linode support team.
+          Submit a new question and request help from the Linode support team.
           Only one of dnszone_id, linode_id, and nodebalancer_id can be set on
           a single ticket.
         params:
@@ -109,3 +109,24 @@ endpoints:
                     "description": "More details about the ticket",
                 }' \
                 https://$api_root/$version/support/tickets/$ticket_id/replies
+  support/tickets/:id/attachments:
+    type: list
+    resource: supportticket
+    authenticated: true
+    methods:
+      POST:
+        oauth: tickets:modify
+        description: >
+          Add a file attachment to a particular support ticket.
+        params:
+          file:
+            description: >
+              The file to attach. There is a 5MB size limit.
+            type: string
+        examples:
+          curl: |
+            curl -H "Content-Type: multipart/form-data" \
+                -H "Authorization: token $TOKEN" \
+                -X POST \
+                -F file=@/path/to/file \
+                https://$api_root/$version/support/tickets/$ticket_id/attachments
