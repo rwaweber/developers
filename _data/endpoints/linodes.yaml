@@ -813,8 +813,8 @@ endpoints:
     type: action
     authenticated: true
     description: >
-      Deletes all Disks and Configs on this Linode, then deploys a new Distribution to this Linode
-      with the given attributes.
+      Deletes all Disks and Configs on this Linode, then deploys a new Distribution to this Linode with the given attributes.
+      Returns information about this <a href="#object-linode">Linode</a>.
     methods:
       POST:
         oauth: linodes:modify
