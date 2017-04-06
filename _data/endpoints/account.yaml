@@ -68,7 +68,7 @@ endpoints:
         description: >
           Confirm your two-factor secret and require TFA for future logins.
         params:
-          tfa-code:
+          tfa_code:
             type: string
             description: >
               The code generated using the two-factor secret you got from tfa-enable
@@ -77,7 +77,7 @@ endpoints:
             curl -H "Content-Type: application/json" \
               -H "Authorization: token $TOKEN" \
               -X POST -d '{
-                "tfa-code": "123456"
+                "tfa_code": "123456"
               }' \
               https://$api_root/$version/account/profile/tfa-enable-confirm
   account/profile/tfa-disable:
