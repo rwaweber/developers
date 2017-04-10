@@ -185,6 +185,24 @@ endpoints:
             curl -H "Authorization: token $TOKEN" \
                 -X DELETE \
                 https://$api_root/$version/nodebalancers/$nodebalancer_id/configs/$config_id
+  nodebalancers/:id/configs/:id/ssl:
+    type: resource
+    authenticated: true
+    description: >
+      Add or update SSL certificate and https protocol to an existing config profile.
+    methods:
+      POST:
+        oauth: nodebaalancers:modify
+        description: Adds/updates SSL certificates
+        examples:
+          curl: |
+            curl -H "Content-Type: application/json" \
+                -H "Authorization: token $TOKEN" \
+                -X POST -d '{
+                  "ssl_cert": "----- BEGIN CERTIFICATE ----- < etc...> ----- END CERTIFICATE -----",
+                  "ssl_key": "----- BEGIN PRIVATE KEY ----- < etc...> ----- END PRIVATE KEY -----"
+                }' \
+                https://$api_root/$version/nodebalancers/$nodebalancer_id/configs/$config_id/ssl
   nodebalancers/:id/configs/:id/nodes:
     type: list
     resource: nodebalancer_config_nodes
