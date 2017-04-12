@@ -62,7 +62,7 @@ can just use the label:
 
 {% highlight python %}
 >>> serv = client.linode.get_types(linode.Service.label == "Linode 2048").first()
->>> serv = linode.Service(client, 'standard-1')
+>>> serv = linode.Service(client, 'g5-standard-1')
 >>> serv.label
 'Linode 2048'
 {% endhighlight %}

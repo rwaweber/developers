@@ -92,7 +92,7 @@ endpoints:
                 -H "Authorization: token $TOKEN" \
                 -X POST -d '{
                     "region": "us-east-1a",
-                    "type": "standard-1"
+                    "type": "g5-standard-1"
                 }' \
                 https://$api_root/$version/linode/instances
           python: |
@@ -613,7 +613,7 @@ endpoints:
             curl -H "Content-Type: application/json" \
                 -H "Authorization: token $TOKEN" \
                 -X POST -d '{
-                    "type": "standard-1"
+                    "type": "g5-standard-1"
                     }
                 }' \
                 https://$api_root/$version/linode/instances/$linode_id/resize

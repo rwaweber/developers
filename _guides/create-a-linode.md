@@ -43,8 +43,8 @@ above command will return a JSON object like the following:
 }
 {% endhighlight %}
 
-The region list is pretty self-explanatory: there are 7 available
-regions, and their geographical locations are provided in the `label`
+The region list is pretty self-explanatory: regions geographical locations
+are provided in the `label`
 field. The `id` field is a unique ID which you'll use to refer to the
 region you want to select. For this example, we'll go with the
 "Newark, NJ" region with ID "us-east-1a".
@@ -66,7 +66,7 @@ The above command will return a JSON object like the following:
 {
     "services": [
         {
-            "id": "standard-1",
+            "id": "g5-standard-1",
             "label": "Linode 2048",
             "vcpus": 1,
             "mbits_out": 125,
@@ -151,7 +151,7 @@ following curl command and run it when you're ready to deploy:
 
 {% highlight bash %}
 curl -X POST https://{{ site.api_root }}/{{ site.api_version }}/linode/instances \
--d '{"type": "standard-1", "region": "us-east-1a", "distribution": "linode/debian8", "root_pass": "$root_pass", "label": "prod-1"}' \
+-d '{"type": "g5-standard-1", "region": "us-east-1a", "distribution": "linode/debian8", "root_pass": "$root_pass", "label": "prod-1"}' \
 -H "Authorization: token $TOKEN" -H "Content-type: application/json"
 {% endhighlight %}
 
@@ -183,7 +183,7 @@ created Linode like the following:
          "transfer": 2000,
          "class": "standard",
          "storage": 24576,
-         "id": "standard-1",
+         "id": "g5-standard-1",
          "backups_price": 250,
          "mbits_out": 125,
          "hourly_price": 1,

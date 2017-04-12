@@ -154,7 +154,7 @@ schema:
         _description: This backup region.
         id:
           _type: string
-          _value: newark
+          _value: us-east-1a
         label:
           _type: string
           _value: Newark, NJ
@@ -180,7 +180,7 @@ schema:
     _description: This Linode's region.
     id:
       _type: string
-      _value: newark
+      _value: us-east-1a
     label:
       _type: string
       _value: Newark, NJ
@@ -244,7 +244,7 @@ schema:
     _value:
       - id:
           _type: string
-          _value: standard-1
+          _value: g5-standard-1
         backups_price:
           _type: integer
           _value: 250
