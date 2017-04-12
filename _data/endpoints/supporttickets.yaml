@@ -24,7 +24,7 @@ endpoints:
         oauth: tickets:create
         description: >
           Submit a new question and request help from the Linode support team.
-          Only one of dnszone_id, linode_id, and nodebalancer_id can be set on
+          Only one of domain_id, linode_id, and nodebalancer_id can be set on
           a single ticket.
         params:
           summary:
@@ -35,9 +35,9 @@ endpoints:
             description: >
               The complete details of the support request.
             type: string
-          dnszone_id:
+          domain_id:
             description: >
-              The DNS zone this ticket is regarding, if relevant.
+              The Domain this ticket is regarding, if relevant.
             type: int
             optional: true
           linode_id:
