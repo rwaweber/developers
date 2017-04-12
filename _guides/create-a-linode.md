@@ -9,29 +9,29 @@ Creating a Linode requires you to be logged in. Before proceeding, make sure
 you have gone through the [Testing with curl guide](/guides/curl-guide), since
 you will need an authorization token to proceed.
 
-Before you can create a Linode, you will need to choose a **datacenter**,
+Before you can create a Linode, you will need to choose a **region**,
 a **service plan**, and a **distribution**. The API has endpoints available to
 help you do this.
 
-## Selecting a datacenter
+## Selecting a region
 
-A datacenter is a physical location which can run Linodes. To retrieve a list
-of available datacenters, you can use the /datacenters API endpoint. To make an
+A region is a physical location which can run Linodes. To retrieve a list
+of available region, you can use the /regions API endpoint. To make an
 API call against this endpoint over curl, run the following command:
 
 {% highlight bash %}
-curl https://{{ site.api_root }}/{{ site.api_version }}/datacenters
+curl https://{{ site.api_root }}/{{ site.api_version }}/regions
 {% endhighlight %}
 
-Note that since the datacenter list is public information, you don't need to
+Note that since the region list is public information, you don't need to
 send your authorization token (although it will still work if you do). The
 above command will return a JSON object like the following:
 
 {% highlight json %}
 {
-    "datacenters": [
+    "regions": [
         {
-            "id": "newark",
+            "id": "us-east-1a",
             "label": "Newark, NJ",
             "country": "US"
         }
@@ -43,15 +43,15 @@ above command will return a JSON object like the following:
 }
 {% endhighlight %}
 
-The datacenter list is pretty self-explanatory: there are 7 available
-datacenters, and their geographical locations are provided in the `label`
+The region list is pretty self-explanatory: regions geographical locations
+are provided in the `label`
 field. The `id` field is a unique ID which you'll use to refer to the
-datacenter you want to select. For this example, we'll go with the
-"Newark, NJ" datacenter with ID "newark".
+region you want to select. For this example, we'll go with the
+"Newark, NJ" region with ID "us-east-1a".
 
 ## Selecting a service plan
 
-Once you have a datacenter in mind, the next step is to choose a Linode
+Once you have a region in mind, the next step is to choose a Linode
 service plan. A service plan determines the resources available to your new
 Linode (such as memory, storage space, and network transfer). Run the
 following curl command to retrieve a list of available Linode plans:
@@ -66,7 +66,7 @@ The above command will return a JSON object like the following:
 {
     "services": [
         {
-            "id": "standard-1",
+            "id": "g5-standard-1",
             "label": "Linode 2048",
             "vcpus": 1,
             "mbits_out": 125,
@@ -96,7 +96,7 @@ the next step.
 ## Selecting a distribution
 
 Now you need to choose a Linux distribution to deploy to your new Linode. Just
-like selecting a service and a datacenter, issue a call to the API, this time
+like selecting a service and a region, issue a call to the API, this time
 for a list of available distributions:
 
 {% highlight bash %}
@@ -131,7 +131,7 @@ For this example, we'll go with Debian 8.1.
 
 ## Creating your new Linode
 
-Now that you've selected a datacenter, service plan, and distribution, you're
+Now that you've selected a region, service plan, and distribution, you're
 ready to launch a new Linode! The API calls above were unauthenticated
 because they return only publicly visible information. However, launching a
 Linode is tied to your account so this call must be authenticated.
@@ -144,14 +144,14 @@ authorization token, read through the
 You should also set a root password for the new Linode (replace
 ```$root_pass```).
 
-As you can see, the datacenter, service plan, and Linux distribution are all
+As you can see, the region, service plan, and Linux distribution are all
 specified in the JSON POST data and can be changed as needed to deploy Linodes
 to different locations and with different characteristics. Customize the
 following curl command and run it when you're ready to deploy:
 
 {% highlight bash %}
 curl -X POST https://{{ site.api_root }}/{{ site.api_version }}/linode/instances \
--d '{"type": "standard-1", "datacenter": "newark", "distribution": "linode/debian8", "root_pass": "$root_pass", "label": "prod-1"}' \
+-d '{"type": "g5-standard-1", "region": "us-east-1a", "distribution": "linode/debian8", "root_pass": "$root_pass", "label": "prod-1"}' \
 -H "Authorization: token $TOKEN" -H "Content-type: application/json"
 {% endhighlight %}
 
@@ -170,8 +170,8 @@ created Linode like the following:
    "hypervisor": "kvm",
    "ipv4": "97.107.143.56",
    "ipv6": "2600:3c03::f03c:91ff:fe0a:18ab/64",
-   "datacenter": {
-      "id": "newark",
+   "region": {
+      "id": "us-east-1a",
       "country": "us",
       "label": "Newark, NJ"
    },
@@ -183,7 +183,7 @@ created Linode like the following:
          "transfer": 2000,
          "class": "standard",
          "storage": 24576,
-         "id": "standard-1",
+         "id": "g5-standard-1",
          "backups_price": 250,
          "mbits_out": 125,
          "hourly_price": 1,
@@ -234,7 +234,7 @@ created Linode like the following:
 {% endhighlight %}
 
 The above response contains lots of details about the newly created Linode,
-including IP addresses, alerts, datacenter information, and meta-data like
+including IP addresses, alerts, region information, and meta-data like
 the date and time it was created. For information on all of the returned fields,
 please see the [Linode object reference](/reference#object-linode). Take note
 of the ```id``` field, as you will need it for the next step.

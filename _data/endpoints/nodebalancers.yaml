@@ -26,11 +26,11 @@ endpoints:
         description: >
           Creates a new NodeBalancer.
         params:
-          datacenter:
+          region:
             description: >
-              A <a href="#object-datacenter">datacenter</a> ID to provision
+              A <a href="#object-region">region</a> ID to provision
               this NodeBalancer in.
-            type: datacenter
+            type: region
           label:
             optional: true
             description: The label to assign this NodeBalancer. Defaults to "nodebalancer" followed by its ID.
@@ -44,7 +44,7 @@ endpoints:
             curl -H "Content-Type: application/json" \
                 -H "Authorization: token $TOKEN" \
                 -X POST -d '{
-                    "datacenter": "newark",
+                    "region": "us-east-1a",
                     "label": "my_cool_balancer",
                     "client_conn_throttle": 10
                 }' \
@@ -73,7 +73,7 @@ endpoints:
             curl -H "Content-Type: application/json" \
                 -H "Authorization: token $TOKEN" \
                 -X PUT -d '{
-                    "datacenter": "newark",
+                    "region": "us-east-1a",
                     "label": "awesome_new_label",
                     "client_conn_throttle": 14
                 }' \

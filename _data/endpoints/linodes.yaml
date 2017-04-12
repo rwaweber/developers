@@ -30,11 +30,11 @@ endpoints:
         description: >
           Creates a new Linode.
         params:
-          datacenter:
+          region:
             description: >
-              A <a href="#object-datacenter">datacenter</a> ID to provision
+              A <a href="#object-region">region</a> ID to provision
               this Linode in.
-            type: datacenter
+            type: region
           type:
             description: >
               A <a href="#object-service">Linode type</a> ID to use for this
@@ -91,8 +91,8 @@ endpoints:
             curl -H "Content-Type: application/json" \
                 -H "Authorization: token $TOKEN" \
                 -X POST -d '{
-                    "datacenter": "newark",
-                    "type": "standard-1"
+                    "region": "us-east-1a",
+                    "type": "g5-standard-1"
                 }' \
                 https://$api_root/$version/linode/instances
           python: |
@@ -613,7 +613,7 @@ endpoints:
             curl -H "Content-Type: application/json" \
                 -H "Authorization: token $TOKEN" \
                 -X POST -d '{
-                    "type": "standard-1"
+                    "type": "g5-standard-1"
                     }
                 }' \
                 https://$api_root/$version/linode/instances/$linode_id/resize

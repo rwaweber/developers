@@ -16,7 +16,7 @@ schema:
   hostname:
     _editable: false
     _type: string
-    _value: 'nb-69-164-223-4.newark.nodebalancer.linode.com'
+    _value: 'nb-69-164-223-4.us-east-1a.nodebalancer.linode.com'
     _description: The NodeBalancer's hostname.
   client_conn_throttle:
     _editable: true

@@ -102,13 +102,13 @@ schema:
         _subtype: Type
         _value: snapshot
         _description: Whether this is a snapshot or an auto backup.
-      datacenter:
-        _type: datacenter
+      region:
+        _type: region
         _filterable: false
-        _description: This backup  datacenter.
+        _description: This backup region.
         id:
           _type: string
-          _value: newark
+          _value: us-east-1a
         label:
           _type: string
           _value: Newark, NJ
@@ -148,13 +148,13 @@ schema:
         _subtype: Type
         _value: snapshot
         _description: Whether this is a snapshot or an auto backup.
-      datacenter:
-        _type: datacenter
+      region:
+        _type: region
         _filterable: false
-        _description: This backup  datacenter.
+        _description: This backup region.
         id:
           _type: string
-          _value: newark
+          _value: us-east-1a
         label:
           _type: string
           _value: Newark, NJ
@@ -174,13 +174,13 @@ schema:
   created:
     _type: datetime
     _value: "2015-09-29T11:21:01"
-  datacenter:
-    _type: datacenter
+  region:
+    _type: region
     _filterable: true
-    _description: This Linode's datacenter.
+    _description: This Linode's region.
     id:
       _type: string
-      _value: newark
+      _value: us-east-1a
     label:
       _type: string
       _value: Newark, NJ
@@ -244,7 +244,7 @@ schema:
     _value:
       - id:
           _type: string
-          _value: standard-1
+          _value: g5-standard-1
         backups_price:
           _type: integer
           _value: 250
@@ -312,7 +312,7 @@ enums:
     rebooting: The Linode is rebooting.
     provisioning: The Linode is being created.
     deleting: The Linode is being deleted.
-    migrating: The Linode is being migrated to a new host/datacenter.
+    migrating: The Linode is being migrated to a new host/region.
   BackupStatus:
     pending: Backup is in the queue and waiting to begin.
     running: Linode in the process of being backed up.
