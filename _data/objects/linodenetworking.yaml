@@ -155,6 +155,6 @@ schema:
         - range:
             _type: string
             _value: 2600:3c01::2:5000
-          datacenter:
+          region:
             _type: string
-            _value: newark
+            _value: region
