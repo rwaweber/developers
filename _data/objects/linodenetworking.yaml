@@ -141,7 +141,7 @@ schema:
       _value: 2a01:7e00::f03c:91ff:fe96
       _description: >
         This Linode's slaac range.
-    link-local:
+    link_local:
       _type: string
       _value: f300::f03c:91ff:fe96:46da
       _description: >
@@ -155,6 +155,6 @@ schema:
         - range:
             _type: string
             _value: 2600:3c01::2:5000
-          datacenter:
+          region:
             _type: string
-            _value: newark
+            _value: region

@@ -82,9 +82,9 @@ This will give you a response like this:
          "label": "prod-1",
          "ipv4": "97.107.143.73",
          "ipv6": "2600:3c03::f03c:91ff:fe0a:18c6/64",
-         "datacenter": {
+         "region": {
             "label": "Newark, NJ",
-            "id": "newark",
+            "id": "us-east-1a",
             "country": "us"
          },
          "backups": {
@@ -138,7 +138,7 @@ This will give you a response like this:
                "storage": 24576,
                "transfer": 2000,
                "vcpus": 1,
-               "id": "standard-1",
+               "id": "g5-standard-1",
                "hourly_price": 1,
                "ram": 2048,
                "monthly_price": 1000,

@@ -1,7 +1,7 @@
 # vim: set et ts=2 sw=2 tw=80 :
 name: NodeBalancer Config Node
 description: >
-  Describes a node for a NodeBalancer configuration.
+  Describes a configuration node for a NodeBalancer.
 schema:
   id:
     _editable: false
@@ -34,6 +34,7 @@ schema:
     _type: string
     _value: "online"
     _description: The status of this node.
+    _description: The connections mode for this node. One of 'accept', 'reject', or 'drain'.
 enums:
   mode:
     accept: accept
